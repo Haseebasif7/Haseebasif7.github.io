@@ -63,4 +63,37 @@
       }
     });
   }
+
+  /* Scroll reveal. Content is visible by default (see main.css); only after
+     confirming IntersectionObserver support and that the visitor hasn't
+     asked for reduced motion do we arm the hidden state and animate items
+     in as they enter the viewport, staggered within each container. */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("js-reveal");
+
+    var groups = document.querySelectorAll("[data-reveal-group]");
+    groups.forEach(function (group) {
+      var items = group.querySelectorAll(".reveal");
+      items.forEach(function (el, i) {
+        el.style.setProperty("--reveal-delay", Math.min(i, 5) * 70 + "ms");
+      });
+    });
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+    );
+
+    document.querySelectorAll(".reveal").forEach(function (el) {
+      observer.observe(el);
+    });
+  }
 })();

@@ -30,7 +30,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/main.css?v=3" />
+    <link rel="stylesheet" href="assets/css/main.css?v=4" />
 
     <script>
       (function () {
@@ -83,8 +83,8 @@
 
         <section aria-labelledby="selected-h">
           <h2 class="section-title" id="selected-h">Selected</h2>
-          <ul class="card-grid card-grid-featured">
-            <li class="card card-featured" id="earthlink">
+          <ul class="card-grid card-grid-featured" data-reveal-group>
+            <li class="card card-featured reveal" id="earthlink">
               <div class="card-head">
                 <h3 class="card-title">EarthLink AI</h3>
                 <span class="card-date">Feb 2026</span>
@@ -108,6 +108,7 @@
                 </p>
               </div>
               <div class="card-thumb-wrap">
+                <span class="card-thumb-tag">product UI</span>
                 <picture>
                   <source srcset="assets/img/projects/earthlink.webp" type="image/webp" />
                   <img
@@ -134,8 +135,8 @@
             </li>
           </ul>
 
-          <ul class="card-grid">
-            <li class="card" id="geopak">
+          <ul class="card-grid" data-reveal-group>
+            <li class="card reveal" id="geopak">
               <div class="card-head">
                 <h3 class="card-title">
                   <a href="https://github.com/Haseebasif7/GEOPAK" rel="noopener">GEOPAK</a>
@@ -151,11 +152,18 @@
                   whole country at once.
                 </p>
               </div>
+              <div class="stat-row">
+                <div class="stat">
+                  <span class="stat-num">3-stage</span>
+                  <span class="stat-label">province, geocell, then offset inference</span>
+                </div>
+              </div>
               <div class="card-thumb-wrap">
+                <span class="card-thumb-tag">architecture</span>
                 <picture>
                   <source srcset="assets/img/projects/geopak.webp" type="image/webp" />
                   <img
-                    class="card-thumb card-thumb--contain"
+                    class="card-thumb"
                     src="assets/img/projects/geopak.jpg"
                     alt="GEOPAK hierarchical geolocation architecture: dual vision encoders feeding province, geocell and offset prediction stages"
                     loading="lazy"
@@ -181,7 +189,7 @@
               </div>
             </li>
 
-            <li class="card" id="deepfaceedit">
+            <li class="card reveal" id="deepfaceedit">
               <div class="card-head">
                 <h3 class="card-title">
                   <a href="https://github.com/Haseebasif7/DeepFaceEdit" rel="noopener">DeepFaceEdit</a>
@@ -194,13 +202,18 @@
                   exploration on StyleGAN2-ADA. A manipulation engine edits semantic
                   attributes through learned direction vectors in
                   <em>W<sup>+</sup></em> space, and a projection module maps real
-                  photographs back into the generator's latent space with
-                  <strong>18% lower L2 reconstruction error</strong> than baseline
-                  pipelines. dlib landmark alignment runs before projection to
-                  preserve identity.
+                  photographs back into the generator's latent space. dlib landmark
+                  alignment runs before projection to preserve identity.
                 </p>
               </div>
+              <div class="stat-row">
+                <div class="stat">
+                  <span class="stat-num">18%</span>
+                  <span class="stat-label">lower L2 reconstruction error vs. baseline</span>
+                </div>
+              </div>
               <div class="card-thumb-wrap">
+                <span class="card-thumb-tag">before / after</span>
                 <picture>
                   <source srcset="assets/img/projects/deepfaceedit.webp" type="image/webp" />
                   <img
@@ -231,7 +244,7 @@
               </div>
             </li>
 
-            <li class="card" id="image2depth">
+            <li class="card reveal" id="image2depth">
               <div class="card-head">
                 <h3 class="card-title">
                   <a href="https://github.com/Haseebasif7/Image2Depth" rel="noopener">Image2Depth</a>
@@ -242,14 +255,23 @@
                 <p>
                   Monocular depth estimation framed as image-to-image translation: a
                   Pix2Pix system with a skip-connected U-Net generator and a PatchGAN
-                  discriminator, trained on dashboard RGB frames. The composite
-                  adversarial and L1 objective gives <strong>23.8% lower MAE</strong>
-                  and sharper depth boundaries than baseline CNN regressors. Ray Tune
-                  (ASHA) drove hyperparameter search and cut convergence time
-                  <strong>31%</strong>, tracked with W&amp;B and MLflow.
+                  discriminator, trained on dashboard RGB frames, giving sharper depth
+                  boundaries than baseline CNN regressors. Ray Tune (ASHA) drove
+                  hyperparameter search, tracked with W&amp;B and MLflow.
                 </p>
               </div>
+              <div class="stat-row">
+                <div class="stat">
+                  <span class="stat-num">23.8%</span>
+                  <span class="stat-label">lower MAE than baseline CNN regressors</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-num">31%</span>
+                  <span class="stat-label">faster convergence via ASHA search</span>
+                </div>
+              </div>
               <div class="card-thumb-wrap">
+                <span class="card-thumb-tag">model output</span>
                 <picture>
                   <source srcset="assets/img/projects/image2depth.webp" type="image/webp" />
                   <img
@@ -280,7 +302,7 @@
               </div>
             </li>
 
-            <li class="card" id="lane-detection">
+            <li class="card reveal" id="lane-detection">
               <div class="card-head">
                 <h3 class="card-title">
                   <a href="https://github.com/Haseebasif7/Advance-Lane-Detection" rel="noopener">Advanced Lane Detection</a>
@@ -294,11 +316,17 @@
                   and distortion correction, a perspective transform to bird's-eye
                   view, binary thresholding, sliding-window lane-pixel search and
                   second-order polynomial fitting. Curvature and vehicle offset are
-                  recovered in meters by mapping image space to metric scale,
-                  validated at <strong>94.2% pixel-level accuracy</strong>.
+                  recovered in meters by mapping image space to metric scale.
                 </p>
               </div>
+              <div class="stat-row">
+                <div class="stat">
+                  <span class="stat-num">94.2%</span>
+                  <span class="stat-label">pixel-level accuracy, validated frame by frame</span>
+                </div>
+              </div>
               <div class="card-thumb-wrap">
+                <span class="card-thumb-tag">video frame</span>
                 <picture>
                   <source srcset="assets/img/projects/lane-detection.webp" type="image/webp" />
                   <img
@@ -338,32 +366,32 @@
           <p class="entry-body" style="margin-bottom: 1.25rem">
             Papers I reimplemented, and standalone models built to test a single idea.
           </p>
-          <ul class="compact">
-            <li>
+          <ul class="compact" data-reveal-group>
+            <li class="reveal">
               <b>NeRF</b>
               <span>Minimal PyTorch reimplementation of Neural Radiance Fields for 3D view synthesis.</span>
             </li>
-            <li>
+            <li class="reveal">
               <b>Knowledge Distillation</b>
               <span>TensorFlow reproduction: compact student models at minimal performance cost.</span>
             </li>
-            <li>
+            <li class="reveal">
               <b>XRayGAN</b>
               <span>Synthetic chest X-ray generation; 89.3% ResNet classifiability on generated samples.</span>
             </li>
-            <li>
+            <li class="reveal">
               <b>Pix2Pix Sat2Map</b>
               <span>Satellite imagery to map-tile translation, SSIM 0.82.</span>
             </li>
-            <li>
+            <li class="reveal">
               <b>Load Forecasting</b>
               <span>LSTM model for short-horizon electricity demand prediction.</span>
             </li>
-            <li>
+            <li class="reveal">
               <b>Face Reconstruction</b>
               <span>PCA and tree-based regressors (scikit-learn) predicting occluded facial structure.</span>
             </li>
-            <li>
+            <li class="reveal">
               <b>NeuroInk</b>
               <span>Neural style transfer built on VGG19 feature statistics.</span>
             </li>

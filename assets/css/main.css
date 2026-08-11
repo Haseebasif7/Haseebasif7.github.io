@@ -39,6 +39,13 @@
   --accent: #0f6f68;
   --accent-hover: #0a544e;
   --accent-wash: rgba(15, 111, 104, 0.08);
+  /* Signal accent — reserved for achievement and active-status moments only
+     (awards, in-progress chips, pulled stats). Never used for links or nav. */
+  --signal: #a6541c;
+  --signal-hover: #8a4415;
+  --signal-wash: rgba(166, 84, 28, 0.09);
+  --mat: #f1efe8;
+  --mat-shadow: inset 0 1px 4px rgba(24, 20, 14, 0.07);
   --shadow: 0 1px 2px rgba(20, 24, 28, 0.04), 0 4px 14px rgba(20, 24, 28, 0.05);
   --selection: rgba(15, 111, 104, 0.16);
 }
@@ -55,6 +62,11 @@ html[data-theme="dark"] {
   --accent: #5ecabb;
   --accent-hover: #86dccf;
   --accent-wash: rgba(94, 202, 187, 0.12);
+  --signal: #e0a458;
+  --signal-hover: #eab876;
+  --signal-wash: rgba(224, 164, 88, 0.13);
+  --mat: #131518;
+  --mat-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
   --selection: rgba(94, 202, 187, 0.22);
 }
@@ -85,6 +97,21 @@ html {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Scroll reveal — progressive enhancement only. Elements are fully visible by
+   default; main.js adds .js-reveal to <html> before arming the hidden state,
+   so a no-JS visitor or a failed script load never loses content. */
+html.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js-reveal .reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 body {
@@ -686,21 +713,49 @@ main {
 
 /* Status chips on research entries */
 .chip {
-  font-family: var(--font-sans);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  padding: 0.14rem 0.5rem;
+  padding: 0.16rem 0.55rem;
   border-radius: 3px;
   border: 1px solid var(--divider-strong);
   color: var(--text-muted);
   white-space: nowrap;
 }
 
+.chip::before {
+  content: "";
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  flex: none;
+}
+
 .chip-active {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-wash);
+  color: var(--signal-hover);
+  border-color: var(--signal);
+  background: var(--signal-wash);
+}
+
+.chip-active::before {
+  opacity: 1;
+  animation: chip-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes chip-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--signal-wash);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--signal-wash);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -952,10 +1007,17 @@ html[data-theme="dark"] .btn:hover {
     transform var(--transition);
 }
 
+/* Image mat — every project image sits in the same recessed tray regardless
+   of its native shape or source (UI capture, academic diagram, dashcam
+   frame), so five very different images read as one consistent series
+   instead of five mismatched screenshots. */
 .card-thumb-wrap {
-  height: 10.75rem;
+  position: relative;
+  height: 13rem;
   margin: 0.85rem 0 0.15rem;
-  background: var(--bg-subtle);
+  padding: 0.9rem;
+  background: var(--mat);
+  box-shadow: var(--mat-shadow);
   border: 1px solid var(--divider);
   border-radius: var(--radius);
   overflow: hidden;
@@ -963,26 +1025,36 @@ html[data-theme="dark"] .btn:hover {
   width: 100%;
 }
 
+.card-thumb-tag {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.7rem;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: var(--mat);
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
 .card-thumb {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  filter: grayscale(0.08);
-  transition: transform 0.4s ease;
-}
-
-.card:hover .card-thumb {
-  transform: scale(1.045);
-}
-
-/* UI screenshots and diagrams: show the full frame instead of cropping. */
-.card-thumb--contain {
   object-fit: contain;
   object-position: center;
-  padding: 0.35rem;
-  background: var(--bg-subtle);
+  filter: grayscale(0.45) contrast(0.98);
+  transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .card-thumb,
+.card:focus-within .card-thumb {
+  filter: grayscale(0);
+  transform: scale(1.035);
 }
 
 .card:hover {
@@ -992,7 +1064,7 @@ html[data-theme="dark"] .btn:hover {
 }
 
 .card-featured {
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--signal);
 }
 
 .card-head {
@@ -1020,7 +1092,7 @@ html[data-theme="dark"] .btn:hover {
 }
 
 .card-date {
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-faint);
   margin-left: auto;
@@ -1033,7 +1105,7 @@ html[data-theme="dark"] .btn:hover {
   padding: 0;
   margin: 0 0 0.65rem;
   font-size: var(--step-sm);
-  color: var(--accent);
+  color: var(--signal-hover);
   line-height: 1.55;
 }
 
@@ -1057,6 +1129,38 @@ html[data-theme="dark"] .btn:hover {
 
 .card-body p:last-child {
   margin-bottom: 0;
+}
+
+/* Pulled stats — the one measured result per project, sized to be scanned
+   from across the page instead of buried mid-sentence. */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1rem 0 0.15rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.stat-num {
+  font-family: var(--font-serif);
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--signal-hover);
+  letter-spacing: -0.01em;
+}
+
+.stat-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  color: var(--text-faint);
+  line-height: 1.35;
+  max-width: 9rem;
 }
 
 .card-foot {

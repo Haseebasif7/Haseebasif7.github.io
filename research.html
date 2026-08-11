@@ -30,7 +30,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/main.css?v=3" />
+    <link rel="stylesheet" href="assets/css/main.css?v=4" />
 
     <script>
       (function () {
@@ -87,8 +87,8 @@
 
         <section class="section" style="margin-top: 0" aria-labelledby="active-h">
           <h2 class="section-title" id="active-h">Active work</h2>
-          <ul class="entries">
-            <li class="entry" id="sasd">
+          <ul class="entries" data-reveal-group>
+            <li class="entry reveal" id="sasd">
               <div class="entry-head">
                 <h3 class="entry-title">SASD: Source-Aware Self-Distillation</h3>
                 <span class="chip chip-active">In progress</span>
@@ -123,7 +123,7 @@
               </div>
             </li>
 
-            <li class="entry" id="refusal">
+            <li class="entry reveal" id="refusal">
               <div class="entry-head">
                 <h3 class="entry-title">
                   Refusal mechanisms &amp; representation engineering
@@ -163,7 +163,7 @@
               </div>
             </li>
 
-            <li class="entry" id="visual-rec">
+            <li class="entry reveal" id="visual-rec">
               <div class="entry-head">
                 <h3 class="entry-title">
                   Visual similarity and complementary product recommendation
@@ -216,8 +216,8 @@
 
         <section class="section" aria-labelledby="completed-h">
           <h2 class="section-title" id="completed-h">Completed</h2>
-          <ul class="entries">
-            <li class="entry" id="qalb">
+          <ul class="entries" data-reveal-group>
+            <li class="entry reveal" id="qalb">
               <div class="entry-head">
                 <h3 class="entry-title">
                   Qalb Post-Train: Urdu math reasoning via RL with verifiable rewards
@@ -242,9 +242,14 @@
                   numeric answer that can be checked automatically. The reward is
                   digit-normalized answer matching against GSM8K-Urdu, with
                   <strong>no judge model and no paid API calls</strong>. Everything
-                  runs on serverless GPUs via Modal. The RFT-merged checkpoint reaches
-                  <strong>94.7% format adherence</strong> on GSM8K-Urdu.
+                  runs on serverless GPUs via Modal.
                 </p>
+              </div>
+              <div class="stat-row">
+                <div class="stat">
+                  <span class="stat-num">94.7%</span>
+                  <span class="stat-label">format adherence, RFT-merged checkpoint on GSM8K-Urdu</span>
+                </div>
               </div>
               <div class="entry-footer">
                 <ul class="tags">
@@ -265,7 +270,7 @@
               </div>
             </li>
 
-            <li class="entry" id="shellsim">
+            <li class="entry reveal" id="shellsim">
               <div class="entry-head">
                 <h3 class="entry-title">
                   shellsim: GRPO terminal agent trained against a simulated shell
