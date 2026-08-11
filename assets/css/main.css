@@ -1,0 +1,1345 @@
+/* ==========================================================================
+   Haseeb Asif — personal site
+   Design DNA: al-folio (academic minimal). Typography: Newsreader + Inter.
+   Single accent color, thin dividers, no decorative animation.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo,
+    Consolas, monospace;
+
+  --maxw: 60rem; /* 960px — page shell */
+  --maxw-prose: 46rem; /* 736px — comfortable measure for body copy */
+
+  --step-sm: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.0625rem;
+
+  --radius: 4px;
+  --transition: 0.15s ease;
+
+  /* Light theme (default) */
+  --bg: #fdfdfc;
+  --bg-subtle: #f6f6f4;
+  --card: #ffffff;
+  --text: #1b1c1e;
+  --text-muted: #6a7075;
+  /* --text-faint carries section titles, dates and the footer note; it must
+     clear 4.5:1 against both --bg and --bg-subtle. */
+  --text-faint: #6c7177;
+  --divider: rgba(24, 26, 28, 0.1);
+  --divider-strong: rgba(24, 26, 28, 0.18);
+  --accent: #0f6f68;
+  --accent-hover: #0a544e;
+  --accent-wash: rgba(15, 111, 104, 0.08);
+  --shadow: 0 1px 2px rgba(20, 24, 28, 0.04), 0 4px 14px rgba(20, 24, 28, 0.05);
+  --selection: rgba(15, 111, 104, 0.16);
+}
+
+html[data-theme="dark"] {
+  --bg: #16181a;
+  --bg-subtle: #1c1f22;
+  --card: #1c1f22;
+  --text: #d9dcdf;
+  --text-muted: #939aa0;
+  --text-faint: #80878d;
+  --divider: rgba(233, 238, 242, 0.11);
+  --divider-strong: rgba(233, 238, 242, 0.2);
+  --accent: #5ecabb;
+  --accent-hover: #86dccf;
+  --accent-wash: rgba(94, 202, 187, 0.12);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --selection: rgba(94, 202, 187, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-1);
+  line-height: 1.68;
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.011em;
+  margin: 0 0 0.6em;
+  color: var(--text);
+}
+
+h1 {
+  font-size: clamp(2.25rem, 5.5vw, 3rem);
+  letter-spacing: -0.022em;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.1875rem;
+}
+h4 {
+  font-size: 1.0625rem;
+}
+
+p {
+  margin: 0 0 1.15em;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  text-decoration-color: var(--accent-wash);
+  text-underline-offset: 0.18em;
+  transition: color var(--transition), text-decoration-color var(--transition);
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--divider);
+  margin: 3rem 0;
+}
+
+ul,
+ol {
+  padding-left: 1.15rem;
+  margin: 0 0 1.15em;
+}
+
+li {
+  margin-bottom: 0.35em;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--accent-wash);
+  color: var(--text);
+  padding: 0.12em 0.36em;
+  border-radius: 3px;
+}
+
+.entry-body code {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+abbr[title] {
+  text-decoration: none;
+  border-bottom: 1px dotted var(--divider-strong);
+  cursor: help;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  z-index: 200;
+  border-radius: 0 0 var(--radius) 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout shell
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+main {
+  flex: 1 0 auto;
+  padding-block: 3.25rem 4.5rem;
+}
+
+.prose {
+  max-width: var(--maxw-prose);
+}
+
+/* Page heading block used on interior pages */
+.page-head {
+  margin-bottom: 2.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--divider);
+}
+
+.page-head h1 {
+  font-size: clamp(2rem, 4.5vw, 2.5rem);
+  margin-bottom: 0.35rem;
+}
+
+.page-head .lede {
+  color: var(--text-muted);
+  font-size: var(--step-1);
+  max-width: var(--maxw-prose);
+  margin: 0;
+}
+
+/* Research page — bento-style interest map with staggered entrance */
+.interest-map {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 40rem;
+}
+
+.interest-node {
+  grid-column: span 2;
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--divider-strong);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem 0.85rem 1.1rem;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0.5rem);
+  animation: interest-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.interest-node-wide {
+  grid-column: span 3;
+}
+
+.interest-node::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  animation: interest-bar 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.interest-node:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.interest-node:nth-child(1)::before {
+  animation-delay: 0.12s;
+}
+.interest-node:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.interest-node:nth-child(2)::before {
+  animation-delay: 0.18s;
+}
+.interest-node:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.interest-node:nth-child(3)::before {
+  animation-delay: 0.24s;
+}
+.interest-node:nth-child(4) {
+  animation-delay: 0.22s;
+}
+.interest-node:nth-child(4)::before {
+  animation-delay: 0.3s;
+}
+.interest-node:nth-child(5) {
+  animation-delay: 0.28s;
+}
+.interest-node:nth-child(5)::before {
+  animation-delay: 0.36s;
+}
+.interest-node:nth-child(6) {
+  animation-delay: 0.34s;
+}
+.interest-node:nth-child(6)::before {
+  animation-delay: 0.42s;
+}
+
+.interest-node:hover,
+.interest-node:focus-visible {
+  border-color: var(--divider-strong);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+@keyframes interest-enter {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes interest-bar {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@media (max-width: 32rem) {
+  .interest-map {
+    grid-template-columns: 1fr;
+  }
+
+  .interest-node,
+  .interest-node-wide {
+    grid-column: 1;
+  }
+}
+
+@media (min-width: 32rem) and (max-width: 44rem) {
+  .interest-map {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .interest-node,
+  .interest-node-wide {
+    grid-column: span 1;
+  }
+}
+
+/* Section headings that separate content blocks */
+.section {
+  margin-top: 3.25rem;
+}
+
+.section-title {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--divider);
+}
+
+/* --------------------------------------------------------------------------
+   4. Navbar
+   -------------------------------------------------------------------------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--divider);
+}
+
+@supports not (backdrop-filter: blur(12px)) {
+  .nav {
+    background: var(--bg);
+  }
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 3.75rem;
+}
+
+.nav-brand {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+.nav-brand:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  display: block;
+  padding: 0.4rem 0.7rem;
+  color: var(--text-muted);
+  font-size: var(--step-0);
+  border-radius: var(--radius);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+  background: var(--accent-wash);
+  text-decoration: none;
+}
+
+.nav-links a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding-left: 0.5rem;
+  margin-left: 0.35rem;
+  border-left: 1px solid var(--divider);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition), background var(--transition);
+}
+
+.icon-btn:hover {
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.icon-btn svg {
+  width: 1.0625rem;
+  height: 1.0625rem;
+}
+
+/* Theme toggle: JS sets data-theme-state to system | light | dark */
+.icon-btn[data-theme-state="system"] .ico-dark,
+.icon-btn[data-theme-state="system"] .ico-light,
+.icon-btn[data-theme-state="light"] .ico-system,
+.icon-btn[data-theme-state="light"] .ico-dark,
+.icon-btn[data-theme-state="dark"] .ico-system,
+.icon-btn[data-theme-state="dark"] .ico-light {
+  display: none;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 40rem) {
+  .nav-toggle {
+    display: inline-grid;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--divider);
+    padding: 0.5rem 1.5rem 1rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 0.6rem 0.25rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. About / profile header
+   -------------------------------------------------------------------------- */
+
+/* Mobile order is source order: name → photo → bio.
+   On wide screens the photo moves into a sticky right-hand column. */
+.profile {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 44rem) {
+  .profile {
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    grid-template-areas:
+      "name  aside"
+      "bio   aside";
+    grid-template-rows: auto 1fr;
+    column-gap: 3rem;
+    align-items: start;
+  }
+}
+
+.profile-name {
+  margin-bottom: 1rem;
+}
+
+/* Keyword row closing the bio. Interests are stated in the bio prose; this is a
+   scannable restatement, not a replacement for it. */
+.bio-keywords {
+  font-family: var(--font-sans);
+  font-size: var(--step-sm);
+  line-height: 1.7;
+  color: var(--text-faint);
+  margin: 1.5rem 0 0;
+}
+
+.profile-aside {
+  margin-bottom: 2rem;
+}
+
+/* Named areas only exist above this breakpoint, so the grid-area assignments
+   must live here too — otherwise they create implicit tracks on mobile. */
+@media (min-width: 44rem) {
+  .profile-name {
+    grid-area: name;
+  }
+
+  .profile-bio {
+    grid-area: bio;
+  }
+
+  .profile-aside {
+    grid-area: aside;
+    position: sticky;
+    top: 5.5rem;
+    margin-bottom: 0;
+  }
+}
+
+.profile-photo {
+  width: 11.5rem;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid var(--divider);
+  filter: grayscale(0.15);
+}
+
+@media (min-width: 44rem) {
+  .profile-photo {
+    width: 100%;
+  }
+}
+
+.profile-meta {
+  font-family: var(--font-sans);
+  font-size: var(--step-sm);
+  line-height: 1.75;
+  color: var(--text-muted);
+  margin-top: 1.15rem;
+  list-style: none;
+  padding: 0;
+}
+
+.profile-meta li {
+  margin-bottom: 0.2rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.profile-meta svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: none;
+  transform: translateY(2px);
+  color: var(--text-faint);
+}
+
+.profile-meta a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.profile-meta a:hover {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   6. Interests / tags
+   -------------------------------------------------------------------------- */
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tag {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--divider);
+  border-radius: 999px;
+  padding: 0.18rem 0.6rem;
+  white-space: nowrap;
+}
+
+.tag-accent {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-color: transparent;
+}
+
+/* Status chips on research entries */
+.chip {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.14rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid var(--divider-strong);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.chip-active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+/* --------------------------------------------------------------------------
+   7. News feed
+   -------------------------------------------------------------------------- */
+
+.news {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--divider);
+}
+
+.news li {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.1rem;
+  padding: 0.7rem 0;
+  margin: 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: var(--step-0);
+}
+
+@media (min-width: 34rem) {
+  .news li {
+    grid-template-columns: 6.5rem 1fr;
+    gap: 1rem;
+  }
+}
+
+.news time {
+  font-family: var(--font-sans);
+  font-size: var(--step-sm);
+  color: var(--text-faint);
+  white-space: nowrap;
+  padding-top: 0.15rem;
+}
+
+/* --------------------------------------------------------------------------
+   8. Entry list (research / experience / education)
+   -------------------------------------------------------------------------- */
+
+.entries {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.entry {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--divider);
+  margin: 0;
+}
+
+.entry:first-child {
+  padding-top: 0.25rem;
+}
+
+.entry:last-child {
+  border-bottom: 0;
+}
+
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.entry-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.entry-title a {
+  color: var(--text);
+}
+
+.entry-title a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.entry-sub {
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  margin: 0 0 0.6rem;
+}
+
+.entry-sub em {
+  font-style: italic;
+  color: var(--text);
+}
+
+.entry-body {
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  max-width: var(--maxw-prose);
+}
+
+.entry-body p:last-child {
+  margin-bottom: 0;
+}
+
+.entry-body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.entry-meta {
+  font-family: var(--font-mono);
+  font-size: var(--step-sm);
+  color: var(--text-faint);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.entry-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  margin-top: 0.9rem;
+}
+
+/* Small inline link buttons (repo / pdf / demo) */
+.link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--divider-strong);
+  border-radius: 3px;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all var(--transition);
+}
+
+.btn-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  text-decoration: none;
+}
+
+.btn-link svg {
+  width: 0.8125rem;
+  height: 0.8125rem;
+  flex: none;
+}
+
+/* Primary button — used for CV download */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--step-0);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+html[data-theme="dark"] .btn {
+  color: #0f1315;
+}
+
+.btn:hover {
+  color: #fff;
+  opacity: 0.88;
+  text-decoration: none;
+}
+
+html[data-theme="dark"] .btn:hover {
+  color: #0f1315;
+}
+
+.btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. Project cards
+   -------------------------------------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 40rem) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Featured project: same column width as cards below, centered on its own row. */
+.card-grid-featured {
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 40rem) {
+  .card-grid-featured {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-grid-featured > .card {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - 1.25rem) / 2);
+    max-width: calc((100% - 1.25rem) / 2);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.4rem;
+  background: var(--card);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 0;
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.card-thumb-wrap {
+  height: 10.75rem;
+  margin: 0.85rem 0 0.15rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.card-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(0.08);
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-thumb {
+  transform: scale(1.045);
+}
+
+/* UI screenshots and diagrams: show the full frame instead of cropping. */
+.card-thumb--contain {
+  object-fit: contain;
+  object-position: center;
+  padding: 0.35rem;
+  background: var(--bg-subtle);
+}
+
+.card:hover {
+  border-color: var(--divider-strong);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.card-featured {
+  border-left: 2px solid var(--accent);
+}
+
+.card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.card-title a {
+  color: var(--text);
+}
+
+.card-title a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card-date {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* One award per line; two on a single row read as one run-on award. */
+.card-awards {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.65rem;
+  font-size: var(--step-sm);
+  color: var(--accent);
+  line-height: 1.55;
+}
+
+.card-awards li {
+  margin-bottom: 0.2rem;
+}
+
+.card-awards li:last-child {
+  margin-bottom: 0;
+}
+
+.card-awards b {
+  font-weight: 600;
+}
+
+.card-body {
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.card-body p:last-child {
+  margin-bottom: 0;
+}
+
+.card-foot {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Compact list for minor work */
+.compact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--divider);
+}
+
+.compact li {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.1rem 1.25rem;
+  align-items: baseline;
+  padding: 0.65rem 0;
+  margin: 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: var(--step-0);
+  color: var(--text-muted);
+}
+
+@media (min-width: 38rem) {
+  .compact li {
+    grid-template-columns: 11rem minmax(0, 1fr);
+  }
+}
+
+.compact b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   10. CV page
+   -------------------------------------------------------------------------- */
+
+.cv-item {
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.cv-item:last-child {
+  border-bottom: 0;
+}
+
+.cv-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+
+.cv-role {
+  font-family: var(--font-sans);
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cv-org {
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  margin: 0 0 0.7rem;
+}
+
+.cv-date {
+  font-family: var(--font-mono);
+  font-size: var(--step-sm);
+  color: var(--text-faint);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.cv-list {
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  max-width: var(--maxw-prose);
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.cv-list li::marker {
+  color: var(--text-faint);
+}
+
+/* Skills: definition-list grid */
+.skills {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.35rem 1.5rem;
+  margin: 0;
+}
+
+@media (min-width: 40rem) {
+  .skills {
+    grid-template-columns: 11rem minmax(0, 1fr);
+  }
+}
+
+.skills dt {
+  font-family: var(--font-mono);
+  font-size: var(--step-sm);
+  color: var(--accent);
+  padding-top: 0.15rem;
+}
+
+.skills dd {
+  margin: 0 0 0.85rem;
+  font-size: var(--step-0);
+  color: var(--text-muted);
+}
+
+@media (min-width: 40rem) {
+  .skills dd {
+    margin-bottom: 0.6rem;
+  }
+}
+
+/* Awards / certificates */
+.award-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--divider);
+}
+
+.award-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  padding: 0.65rem 0;
+  margin: 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: var(--step-0);
+}
+
+.award-list .award-name {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.award-list .award-org {
+  color: var(--text-muted);
+}
+
+.award-list .award-year {
+  font-family: var(--font-mono);
+  font-size: var(--step-sm);
+  color: var(--text-faint);
+  margin-left: auto;
+}
+
+/* --------------------------------------------------------------------------
+   11. Callout
+   -------------------------------------------------------------------------- */
+
+.callout {
+  border-left: 2px solid var(--accent);
+  background: var(--accent-wash);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  max-width: var(--maxw-prose);
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   12. Footer
+   -------------------------------------------------------------------------- */
+
+.footer {
+  flex: none;
+  border-top: 1px solid var(--divider);
+  padding-block: 2.25rem 2.5rem;
+  background: var(--bg-subtle);
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1.35rem;
+  margin-bottom: 1.15rem;
+}
+
+.footer-social a {
+  color: var(--text-muted);
+  display: inline-grid;
+  place-items: center;
+  transition: color var(--transition), transform var(--transition);
+}
+
+.footer-social a:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.footer-social svg {
+  width: 1.3125rem;
+  height: 1.3125rem;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: var(--step-sm);
+  color: var(--text-faint);
+  margin: 0;
+  line-height: 1.7;
+}
+
+.footer-note a {
+  color: var(--text-muted);
+}
+
+.footer-note a:hover {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   13. 404
+   -------------------------------------------------------------------------- */
+
+.center-page {
+  text-align: center;
+  padding-block: 5rem 6rem;
+}
+
+.center-page .code {
+  font-family: var(--font-mono);
+  font-size: clamp(3.5rem, 12vw, 6rem);
+  color: var(--accent);
+  line-height: 1;
+  margin: 0 0 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   14. Print — makes the CV page print cleanly
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .nav,
+  .footer,
+  .btn,
+  .skip-link {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 10.5pt;
+  }
+
+  main {
+    padding: 0;
+  }
+
+  .container {
+    max-width: none;
+    padding: 0;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .cv-item,
+  .entry {
+    break-inside: avoid;
+  }
+}
