@@ -1,2 +1,5 @@
 .agents/
 .DS_Store
+.claude/
+skills-lock.json
+my_info/
