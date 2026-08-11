@@ -82,3 +82,6 @@ is and what it measured, then stop.
   changes.
 - The nav and footer are duplicated across the four pages by design (no build
   step). If you change one, change all four.
+- The "Book a call" link points to `https://cal.com/haseebasif7`, a
+  placeholder username. See `book-a-call.md` for the one-time setup to make
+  it live.
