@@ -1030,22 +1030,12 @@ html[data-theme="dark"] .btn:hover {
   }
 }
 
-/* Featured project: same column width as cards below, centered on its own row. */
+/* Featured project: the one card that gets the full row and a wide-screen
+   side-by-side layout, instead of being pinned to half-width and centered
+   (which left two empty gutters and read as a small box floating in space). */
 .card-grid-featured {
+  display: block;
   margin-bottom: 1.25rem;
-}
-
-@media (min-width: 40rem) {
-  .card-grid-featured {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .card-grid-featured > .card {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: calc((100% - 1.25rem) / 2);
-    max-width: calc((100% - 1.25rem) / 2);
-  }
 }
 
 .card {
@@ -1119,6 +1109,37 @@ html[data-theme="dark"] .btn:hover {
 
 .card-featured {
   border-left: 2px solid var(--signal);
+}
+
+@media (min-width: 46rem) {
+  .card-featured {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1.85rem;
+    padding: 1.6rem 1.75rem;
+  }
+
+  .card-featured-body {
+    flex: 1 1 54%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-featured .card-thumb-wrap {
+    flex: 1 1 46%;
+    height: auto;
+    min-height: 14rem;
+    margin: 0;
+  }
+
+  .card-featured .card-body {
+    flex: 1;
+  }
+
+  .card-featured .card-foot {
+    margin-top: auto;
+  }
 }
 
 .card-head {
