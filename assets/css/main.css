@@ -1109,11 +1109,26 @@ html[data-theme="dark"] .btn:hover {
 }
 
 .card-awards li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
 .card-awards li:last-child {
   margin-bottom: 0;
+}
+
+.award-star {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  margin-top: 0.2rem;
+  flex: none;
+  color: var(--signal);
+}
+
+.award-text {
+  min-width: 0;
 }
 
 .award-title {
